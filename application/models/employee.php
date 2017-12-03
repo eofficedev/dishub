@@ -207,7 +207,7 @@ class Employee extends CI_Model {
      */
 
     function update_emp() {
-
+        
         $this->load->model('job');
         $job_code = $this->job->get_job_code($this->input->post('emp_job'));
 
@@ -235,9 +235,10 @@ class Employee extends CI_Model {
 
         $data2 = array(
             "emp_id" => $this->input->post('emp_num'),
-            "emp_username" => $this->input->post('username'),
-            "emp_password" => md5($this->input->post('password'))
+            "emp_username" => $this->input->post('username')
         );
+        if($this->input->post("password")!="")
+            $data2["emp_password"]=md5($this->input->post("password"));
 
         $this->db->where('emp_id', $this->input->post('emp_id'));
         $this->db->update('hrms_employees', $data);

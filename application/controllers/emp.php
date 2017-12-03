@@ -34,7 +34,7 @@ class Emp extends CI_Controller {
         $this->load->model("absensi/database","pegawai",true);
         $this->pegawai->set_table("hrms_employees");
         $this->pegawai->set_table("hrms_employees");
-$data["countEmployee"] = $this->pegawai->count();
+        $data["countEmployee"] = $this->pegawai->count();
         
         $this->load->model('job');
         $data['jobs'] = $this->job->get_all_job();
@@ -58,10 +58,10 @@ $data["countEmployee"] = $this->pegawai->count();
 
         return $data;
     }
+   
     function process_add() {
-
         $this->form_validation->set_rules('emp_firstname', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('emp_lastname', 'Last Name', 'trim|required');
+        // $this->form_validation->set_rules('emp_lastname', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('emp_dob', 'Birth Date', 'trim|required');
         $this->form_validation->set_rules('emp_street', 'Street Address', 'trim|required');
         $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
@@ -72,9 +72,15 @@ $data["countEmployee"] = $this->pegawai->count();
         $this->form_validation->set_rules('email_password', 'Email Password', 'required');
         $this->form_validation->set_rules('email_username', 'Email Username', 'required');
         $this->form_validation->set_rules('cpassword', 'Confirm Password', 'trim|required|matches[password]');
-
+        foreach ($this->input->post("emp_work_telp") as $key => $value) {
+            // echo $key." ".$value;
+            $this->form_validation->set_rules('emp_work_telp['.$key.']', 'Telp', 'trim|xss_clean|is_unique[emp_telp.telp_no]');
+        
+        }
 
         if ($this->form_validation->run() != FALSE) {
+
+            // die();
             $this->load->model('employee');
             $q = $this->employee->add_employee();
 
@@ -84,6 +90,7 @@ $data["countEmployee"] = $this->pegawai->count();
                 redirect('emp/add_emp');
             }
         } else {
+            // echo validation_errors();
             $this->add_emp();
         }
     }
@@ -121,7 +128,7 @@ $data["countEmployee"] = $this->pegawai->count();
 
         $num = $this->input->post('emp_num');
         $this->form_validation->set_rules('emp_firstname', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('emp_lastname', 'Last Name', 'trim|required');
+        // $this->form_validation->set_rules('emp_lastname', 'Last Name', 'trim|required');
         $this->form_validation->set_rules('emp_dob', 'Birth Date', 'trim|required');
         $this->form_validation->set_rules('emp_street', 'Street Address', 'trim|required');
         $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
@@ -142,6 +149,8 @@ $data["countEmployee"] = $this->pegawai->count();
                 redirect('/emp');
             }
         } else {
+            // echo validation_errors();
+            // die();
             $this->load->model('employee');
             $data['res'] = $this->input->post('emp_num');
 

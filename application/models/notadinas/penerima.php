@@ -7,6 +7,8 @@ class penerima extends database
 {
 	public $nota_id;
 	public $emp_num;
+	public $external;
+	public $name="";
 	public $cc_status = 0;
 	public $disposisi_status = 0;
 	function __construct()
@@ -20,6 +22,8 @@ class penerima extends database
 		$data['nota_id'] = $this->nota_id;
 		$data['emp_num'] = $this->emp_num;
 		$data['cc_status'] = $this->cc_status;
+		$data['external'] = $this->external;
+		$data['name'] = $this->name;
 		$data['disposisi_status'] = $this->disposisi_status;
 		$this->values = $data;
 	}

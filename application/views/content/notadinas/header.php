@@ -12,6 +12,7 @@
         <script type="text/javascript" src="<?php  echo $this->config->item('js') ?>ckeditor/styles.js"></script>
       
  <script type="text/javascript" src="<?php  echo $this->config->item('js') ?>my.js"></script>
+ <script type="text/javascript" src="<?php  echo $this->config->item('js') ?>bootstrap-typeahead.min.js"></script>
  <script type="text/javascript" src="<?php  echo $this->config->item('js') ?>ajaxfileupload.js"></script>
        <link rel="stylesheet" type="text/css" href="<?php  echo $this->config->item('css') ?>bootstrap.css">
         <link rel="stylesheet" type="text/css" href="<?php  echo $this->config->item('css') ?>jqueryui.css">

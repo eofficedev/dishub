@@ -8,6 +8,18 @@
      <a class="btn btn-info" onclick="paste_ref()" role="button">Paste Ref</a>
      <a class="btn btn-success" id="btn_options "role="button" onclick="open_options()">Options</a>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		CKEDITOR.replace("kepada_nama",{
+			uiColor : "#148C4",
+			width:"100%",
+			height:"75px",
+			toolbar :[
+
+			]
+		});
+	})
+</script>
 <div role="form" id="form_edit">
 	<div class="form-group">
 <table >
@@ -20,19 +32,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		
 		<tr>
 			<td>Kepada</td>
 			<td>:</td>
-			<td colspan="2"><select class="form-control sel" size="4" id="kepada">
-				<?php 
-					foreach ($kepada as $k) {
-						if($k->cc_status==0)
-						echo "<option value='".$k->emp_num."'>".$k->emp_firstname." ".$k->emp_lastname." / ".$k->job_name."</option>";
-					}
-				 ?>
-			</select >
-				<a class='btn btn-success' id='btn-show-kepada' onclick="open_dialog('kepada')">Adress Book</a>
-					  <a class='btn btn-default' id='btn-delete-kepada' onclick="delete_option('kepada')">Delete</a></td>
+			<td colspan="2">
+
+				<textarea id="kepada_nama" id="kepada_nama" name="kepada_nama" class="kepada_nama">
+					<?php echo $kepada_external[0]->name ?>
+				</textarea>
+			</td>
 		</tr>
 		<tr>
 			<td>Dari</td>
@@ -141,13 +150,12 @@
 <a class='btn btn-default'  onclick="delete_option('ref')">Delete</a><br></td>
 		</td>
 	</tr>
-	<tr style="display:none" >
+	<tr style="display:none">
 		<td colspan="2">Komentar:<br>
 		<textarea class="form-control" id="comment">
 
 		</textarea>
 	<br>
-<a class='btn btn-default' id='btn-delete-kepada' onclick="delete_option('ref')">Delete</a></td>
 	<br></td>
 	</tr>
 </table>
@@ -179,7 +187,6 @@
 		
     function simpan_progress(){
     	var nota_id = document.getElementById("notaid").value;
-        var optkepada = document.getElementById("kepada").options;
         var dari = document.getElementById("dari").value;
         var opttembusan = document.getElementById("tembusan").options;
         var lampiran = $('input:text.lampiran').serialize();
@@ -189,17 +196,14 @@
         var attachment = document.getElementsByClassName("attachments");
         var tanggal_nota = document.getElementById("nota_tanggal").value;
         var komentar = document.getElementById("comment").value;
-       	var ck = document.getElementById("kepada").length;
+       	// var ck = document.getElementById("kepada").length;
        	var ct = document.getElementById("tembusan").length;
        
-	       	var kepada=[];
-	       	var kepada_nama=[];
+	       	var kepada=["-1"];
+	       	var kepada_nama=[get_value_isi("kepada_nama")];
 	       	var tembusan=[];
 	       	var pemeriksa=[];
-	       	for (var i = 0 ; i < ck; i++) {
-	       		kepada.push(optkepada[i].value);
-	       		kepada_nama.push(optkepada[i].text);
-	       	}
+	       
 	       	for (var i = 0 ; i < ct; i++) {
 	       		tembusan.push(opttembusan[i].value);
 	       	}

@@ -24,22 +24,36 @@
      <a class="btn btn-info" onclick="paste_ref()" role="button">Paste Ref</a>
      <a class="btn btn-success" id="btn_options "role="button" onclick="open_options()">Options</a>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		CKEDITOR.replace("kepada_nama",{
+			uiColor : "#148C4",
+			width:"100%",
+			height:"75px",
+			toolbar :[
+
+			]
+		});
+	})
+</script>
 <div role="form" id="form_compose" onload=''>
 	<div class="form-group">
 <table >
 	<thead>
 		<tr>
 			<td colspan="3"><H1>Nota Dinas</H1></td>
-			<td><img class="logo-nota"height="150px" src='<?php echo base_url('css').'/'.$app_config->row()->logo_url; ?>'  height="25%"></td>
+			<td><img class="logo-nota" height="150px" src='<?php echo base_url('css').'/'.$app_config->row()->logo_url; ?>'  height="25%"></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>Kepada</td>
 			<td>:</td>
-			<td colspan="2"><select class="form-control sel" size="4" id="kepada"></select >
-				<a class='btn btn-success' id='btn-show-kepada' onclick="open_dialog('kepada')">Address Book</a>
-					  <a class='btn btn-default' id='btn-delete-kepada' onclick="delete_option('kepada')">Delete</a></td>
+			<td colspan="2">
+				<textarea id="kepada_nama" id="kepada_nama" name="kepada_nama" class="kepada_nama">
+					
+				</textarea>
+			</td>
 		</tr>
 		<tr>
 			<td>Dari</td>
@@ -152,7 +166,7 @@ include_once("dialog_form.php");
 <script type="text/javascript">
 
 function submit_draft(){
-        var optkepada = document.getElementById("kepada").options;
+        // var optkepada = document.getElementById("kepada").options;
         var dari = document.getElementById("dari").value;
         var opttembusan = document.getElementById("tembusan").options;
         var optpemeriksa = document.getElementById("pemeriksa").options;
@@ -160,21 +174,19 @@ function submit_draft(){
         // var kode_masalah = document.getElementById("kode_masalah").value;
         var perihal = document.getElementById("perihal").value;
         var isi = get_value_isi("nota_isi");
-       
+
+        var kepada_nama =[ get_value_isi("kepada_nama")];
+        var kepada =["-1"];
+       console.log(kepada_nama);
+
         var attachment = document.getElementsByClassName("attachments");
         var tanggal_nota = document.getElementById("nota_tanggal").value;
         var komentar = document.getElementById("comment").value;
-       	var ck = document.getElementById("kepada").length;
+       	// var ck = document.getElementById("kepada").length;
        	var ct = document.getElementById("tembusan").length;
        	var cp = document.getElementById("pemeriksa").length;
-       	var kepada_nama = [];
-	       	var kepada=[];
-	       	var tembusan=[];
+       	   	var tembusan=[];
 	       	var pemeriksa=[];
-	       	for (var i = 0 ; i < ck; i++) {
-	       		kepada.push(optkepada[i].value);
-	       		kepada.push(optkepada[i].text);
-	       	}
 	       	for (var i = 0 ; i < ct; i++) {
 	       		tembusan.push(opttembusan[i].value);
 	       	}
@@ -247,7 +259,7 @@ function submit_draft(){
 
  		var konf = confirm("Apakah Anda yakin akan submit nota dinas ini?");
  		if (konf==true){
-        var optkepada = document.getElementById("kepada").options;
+        // var optkepada = document.getElementById("kepada").options;
         var optref = document.getElementById("ref").options;
         var optdari = document.getElementById("dari").options;
         var opttembusan = document.getElementById("tembusan").options;
@@ -259,17 +271,20 @@ function submit_draft(){
         var attachment = $('input:file.attachments').val();
         var tanggal_nota = document.getElementById("nota_tanggal").value;
         var komentar = document.getElementById("comment").value;
-       	var ck = document.getElementById("kepada").length;
+       	// var ck = document.getElementById("kepada").length;
        	var cd = document.getElementById("dari").length;
        	var ct = document.getElementById("tembusan").length;
        	var cr = document.getElementById("ref").length;
        	var cp = document.getElementById("pemeriksa").length;
+
+
+        var kepada_nama = [get_value_isi("kepada_nama")];
+        var kepada =["-1"];
+        // console.log("kepada",kepada_nama);
+        // return true;
  	var pesan="";
  	var sbmt=false;
- 	if(ck == 0){
- 		pesan = pesan +", field kepada ";
- 		sbmt=true;
- 	}if( cd ==0){
+ 	if( cd ==0){
  		pesan = pesan +", field dari ";
  		sbmt=true;
  	} 
@@ -293,16 +308,9 @@ function submit_draft(){
      	return false;
      }
        	else{
-       	var kepada=[];
-       	var kepada_nama=[];
        	var tembusan=[];
        	var pemeriksa=[];
-       	var kepada_nama=[];
-       	var ref=[]
-       	for (var i = 0 ; i < ck; i++) {
-       		kepada.push(optkepada[i].value);
-       		kepada_nama.push(optkepada[i].text);
-       	}
+       	var ref=[];
        	for (var i = 0 ; i < ct; i++) {
        		tembusan.push(opttembusan[i].value);
        	}
@@ -333,6 +341,7 @@ function submit_draft(){
         fdata.append("pemeriksa",pemeriksa);
         fdata.append("komentar",komentar);
         fdata.append("attachment", attachment);
+            	console.log(kepada_nama);
 		
         $.ajax({
             type:"POST",

@@ -285,18 +285,33 @@
                 <tr>
                     <td>Telepon</td>
                     <td> : <?php
-                        $data = array(
-                            'name' => 'emp_work_telp[]',
-                            'size' => '25',
-                            'value' => set_value('emp_work_telp')
-                        );
-                        echo form_input($data);
+                        if($this->input->post("emp_work_telp")){
+                            $data = array(
+                                'name' => 'emp_work_telp[]',
+                                'size' => '25',
+                                'value' => set_value('emp_work_telp[0]')
+                            );
+                            echo form_input($data);
+                           
+                        }
+                        else{
+                            $data = array(
+                                'name' => 'emp_work_telp[]',
+                                'size' => '25',
+                                'value' => set_value('emp_work_telp')
+                            );
+                            echo form_input($data);
+                        }
                         ?></td>
-                    <td class="error-msg"><?php echo form_error('emp_work_telp'); ?></td>
+                    <td class="error-msg"><?php 
+                    foreach ($this->input->post("emp_work_telp") as $key => $value) {
+                        echo form_error('emp_work_telp['.$key.']');
+                    }
+                     ?></td>
                     <td><button class="tambah-btn">+</button></td>
                 </tr>
                 <tbody id="tambah-telp">
-
+                    
                 </tbody>
                 <tr>
                     <td>Email</td>

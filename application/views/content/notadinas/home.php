@@ -32,7 +32,26 @@ function click_compose(){
 	              var url = "<?php echo site_url('notadinas/nav/compose') ?>";
 	              var data = "<iframe  src='"+url+"' class='frame' ></iframe>";
 	              
-	              add_tab(generate_kode_tab(),'Compose',data);
+	              add_tab(generate_kode_tab(),'Compose_Internal',data);
+	              
+	             
+	             $( "#content" ).height( 1400 ).css({
+				    height: hg +"px"
+				});
+
+			}
+			function click_compose_external(){
+
+	              $(".tab-pane").removeClass("active");
+	              $(".headingtab").removeClass("active");
+	               var hg = document.getElementById('navigasi_kanan').style.height.value+200 ;
+	             var width = document.getElementById('navigasi_kanan').style.height.value+200 ;
+	             hg = document.getElementById('navigasi_kanan').style.height.value+200
+	            
+	              var url = "<?php echo site_url('notadinas/nav/compose_external') ?>";
+	              var data = "<iframe  src='"+url+"' class='frame' ></iframe>";
+	              
+	              add_tab(generate_kode_tab(),'Compose_External',data);
 	              
 	             
 	             $( "#content" ).height( 1400 ).css({
@@ -70,7 +89,20 @@ function get_value_isi(id){
 
 			<div class="navigasi-kiri" id="navigasi_kiri">
 				 <div class="btn-group btn-group-justified">
-				 	<a class='btn btn-primary' role='button' id='compose' onclick='click_compose()'>Compose</a>
+				 	<div class="btn-group">
+				 		<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+				 			Compose <span class="caret"></span>
+				 		</button>
+				 		<ul class="dropdown-menu" role="menu">
+				 			<li>
+				 				<a id='compose' onclick='click_compose()'>Internal</a>
+				 			</li>
+				 			<li>
+				 				<a onclick='click_compose_external()'>External</a>
+				 			</li>
+				 			
+				 		</ul>
+				 	</div>
 				 	<a class='btn btn-info' role='button' onclick='open_folder()'>Folder</a>
 				 	<a class='btn btn-success' role='button'  onclick='open_search()'>Search</a>
 			      </div>

@@ -38,6 +38,8 @@
             $this->folder->set_where($where);
             $this->data["folder"] = $this->folder->tampil();
 
+                  $this->data['appconfig'] = $this->admin_config->load_app_config()->row();
+
                   $this->tampilan->set_table("view_nota_employees");
                   $this->tampilan->set_order("org_code asc");
                   $this->data['app_config'] = $this->admin_config->load_app_config();
@@ -46,6 +48,7 @@
                   $this->data['all_emp'] = $this->tampilan->tampil();
                   $this->data['all_atasan_pmh'] = $this->employee->get_all_atasan_pmh();
                   $this->data["pimpinan"] = $this->employee->get_pimpinan();
+
             
         }
 
@@ -77,7 +80,24 @@
                   $this->data['list_profile'] = $this->employee->load_list_profile($emp_data->emp_num);
                   $this->data['error'] = $error;
                   $this->data['fiatur'] = $this->employee->get_fiatur_by_org($emp_data->org_id);
-      		$this->load->view("content/notadinas/compose",$this->data);
+          $this->load->view("content/notadinas/compose",$this->data);
+            }
+            function compose_external($error=null){
+              $this->penerima->tampil();
+                 $this->data["masalah"] = $this->kode_masalah->tampil();
+                  $username = $this->session->userdata('username');
+                  $this->data['result'] = $this->employee->get_detail_emp($username);
+                  $employee = $this->data['result'];
+                  $emp_data = $employee->row();
+                  $dt = $this->data['result']->row();
+                  $this->data['job'] = $this->job->get_job_data_by_code($dt->job_code)->row();
+                  $this->load->model('notifications');
+                  $this->data['app_config'] = $this->admin_config->load_app_config();
+                  $this->data['pemeriksa'] = $this->employee->load_pemeriksa_sppd();
+                  $this->data['list_profile'] = $this->employee->load_list_profile($emp_data->emp_num);
+                  $this->data['error'] = $error;
+                  $this->data['fiatur'] = $this->employee->get_fiatur_by_org($emp_data->org_id);
+          $this->load->view("content/notadinas/compose_external",$this->data);
             }
         function folder_change($name,$filter="ALL",$year="ALL"){
                   $username = $this->session->userdata('username');
@@ -130,7 +150,7 @@
            function submit_nota($emp_num){
                   $this->nota->creator = $emp_num;
                   $nota_id = kode_nota();
-                 $this->nota->nota_id = $nota_id;
+                  $this->nota->nota_id = $nota_id;
                   $this->nota->set_values();
                   $this->nota->simpan();
 
@@ -150,14 +170,25 @@
                   $kepada = $this->input->post('kepada');
                   $kepada = substr($kepada, 0, strlen($kepada));
                   $kepada = explode(",", $kepada); 
-                  for($i=0;$i<count($kepada);$i++){
-                     $this->penerima->nota_id = $nota_id;
-                     $this->penerima->emp_num = $kepada[$i];
-                     $this->penerima->emp_from =  $this->input->post("nota_sender");
-                     $this->penerima->set_values();
-                     $this->penerima->simpan();
+                  $kepada_nama = $this->input->post('kepada_nama');
+                  $kepada_nama = substr($kepada_nama, 0, strlen($kepada_nama));
+                  $kepada_nama = explode(",", $kepada_nama);
+
+                  if($kepada[0]!=""){
+                    for($i=0;$i<count($kepada);$i++){
+                       $this->penerima->nota_id = $nota_id;
+                       $this->penerima->emp_num = $kepada[$i];
+                       $this->penerima->external = ($kepada[$i]=="-1")?1:0;
+                       if($this->penerima->external)
+                          $this->penerima->name = $kepada_nama[$i] ;
+
+                       $this->penerima->emp_from = $this->input->post("nota_sender");
+                       $this->penerima->set_values();
+                       $this->penerima->simpan();
+                    }
                   }
 
+                  $this->penerima->external = 0;
                   $tembusan = $this->input->post('tembusan');
                   $tembusan = substr($tembusan, 0, strlen($tembusan));
                   $tembusan = explode(",", $tembusan);
@@ -256,13 +287,24 @@
                   $kepada = $this->input->post('kepada');
                   $kepada = substr($kepada, 0, strlen($kepada));
                   $kepada = explode(",", $kepada); 
-                  for($i=0;$i<count($kepada);$i++){
-                     $this->penerima->nota_id = $nota_id;
-                     $this->penerima->emp_num = $kepada[$i];
-                     $this->penerima->emp_from = $this->aktif_user->emp_num;
-                     $this->penerima->set_values();
-                     $this->penerima->simpan();
+                   $kepada_nama = $this->input->post('kepada_nama');
+                  $kepada_nama = substr($kepada_nama, 0, strlen($kepada_nama));
+                  $kepada_nama = explode(",", $kepada_nama);
+
+                  if($kepada[0]!=""){
+                    for($i=0;$i<count($kepada);$i++){
+                       $this->penerima->nota_id = $nota_id;
+                       $this->penerima->emp_num = $kepada[$i];
+                       $this->penerima->external = ($kepada[$i]=="-1")?1:0;
+                       if($this->penerima->external)
+                          $this->penerima->name = $kepada_nama[$i] ;
+
+                       $this->penerima->emp_from = $this->input->post("nota_sender");
+                       $this->penerima->set_values();
+                       $this->penerima->simpan();
+                    }
                   }
+                  $this->penerima->external = 0;
                   $tembusan = $this->input->post('tembusan');
                   $tembusan = substr($tembusan, 0, strlen($tembusan));
                   $tembusan = explode(",", $tembusan);
@@ -371,15 +413,25 @@
                   $kepada = $this->input->post('kepada');
                   $kepada = substr($kepada, 0, strlen($kepada));
                   $kepada = explode(",", $kepada);
+                  
+                  $kepada_nama = $this->input->post('kepada_nama');
+                  $kepada_nama = substr($kepada_nama, 0, strlen($kepada_nama));
+                  $kepada_nama = explode(",", $kepada_nama);
+
                   if($kepada[0]!=""){
                     for($i=0;$i<count($kepada);$i++){
                        $this->penerima->nota_id = $nota_id;
                        $this->penerima->emp_num = $kepada[$i];
-                     $this->penerima->emp_from = $this->input->post("nota_sender");
+                       $this->penerima->external = ($kepada[$i]=="-1")?1:0;
+                       if($this->penerima->external)
+                          $this->penerima->name = $kepada_nama[$i] ;
+
+                       $this->penerima->emp_from = $this->input->post("nota_sender");
                        $this->penerima->set_values();
                        $this->penerima->simpan();
                     }
                   }
+                  $this->penerima->external = 0;
                   $tembusan = $this->input->post('tembusan');
                   $tembusan = substr($tembusan, 0, strlen($tembusan));
                   $tembusan = explode(",", $tembusan);
@@ -455,15 +507,24 @@
                   $kepada = $this->input->post('kepada');
                   $kepada = substr($kepada, 0, strlen($kepada));
                   $kepada = explode(",", $kepada);
+                  $kepada_nama = $this->input->post('kepada_nama');
+                  $kepada_nama = substr($kepada_nama, 0, strlen($kepada_nama));
+                  $kepada_nama = explode(",", $kepada_nama);
+
                   if($kepada[0]!=""){
                     for($i=0;$i<count($kepada);$i++){
                        $this->penerima->nota_id = $nota_id;
                        $this->penerima->emp_num = $kepada[$i];
-                     $this->penerima->emp_from =  $this->input->post("nota_sender");
+                       $this->penerima->external = ($kepada[$i]=="-1")?1:0;
+                       if($this->penerima->external)
+                          $this->penerima->name = $kepada_nama[$i] ;
+
+                       $this->penerima->emp_from = $this->input->post("nota_sender");
                        $this->penerima->set_values();
                        $this->penerima->simpan();
                     }
                   }
+                  $this->penerima->external = 0;
                   $tembusan = $this->input->post('tembusan');
                   $tembusan = substr($tembusan, 0, strlen($tembusan));
                   $tembusan = explode(",", $tembusan);
@@ -489,8 +550,8 @@
               $this->referensi->set_table("view_nota_referensi");
               $this->data["referensi"]=$this->referensi->tampil();
               $this->nota->set_where($where);
-                $this->nota_options->set_where($where);
-                $this->data["options"] = $this->nota_options->tampil();
+              $this->nota_options->set_where($where);
+              $this->data["options"] = $this->nota_options->tampil();
               $this->nota->set_table("nota_inbox_view");
               $this->lampiran->set_where($where);
               $this->data["nota"] = $this->nota->tampil();
@@ -498,6 +559,11 @@
               $this->tampilan->set_where($where);
               $this->tampilan->set_order("nota_id asc");
               $this->data["kepada"] = $this->tampilan->tampil();
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+
               $this->tampilan->set_table("view_nota_tembusan");
               $this->tampilan->set_where($where);
               $this->data["tembusan"] = $this->tampilan->tampil();
@@ -506,6 +572,9 @@
               $this->pegawai->set_table("view_nota_employees");
 
               $this->data["dari"] = $this->pegawai->tampil();
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
+             
+              $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
               $this->data["lampiran"] = $this->lampiran->tampil();
               $this->tampilan->set_where(array("nota_id"=>$nota_id,"emp_num"=>$this->aktif_user->emp_num));
               $this->tampilan->set_table("view_nota_disposisi");
@@ -547,12 +616,20 @@
               $this->tampilan->set_where($where);
               $this->tampilan->set_order("nota_id asc");
               $this->data["kepada"] = $this->tampilan->tampil();
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+
               $this->tampilan->set_table("view_nota_tembusan");
               $this->tampilan->set_where($where);
               $this->data["tembusan"] = $this->tampilan->tampil();
               $where = array("emp_num"=>$this->data["nota"][0]->nota_sender_num);
               $this->pegawai->set_where($where);
               $this->data["dari"] = $this->pegawai->tampil();
+
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
+             
               $this->data["lampiran"] = $this->lampiran->tampil();
               $this->load->view("content/notadinas/sent_detail",$this->data);
            }
@@ -583,6 +660,11 @@
               $this->tampilan->set_where($where);
               $this->tampilan->set_order("nota_id asc");
               $this->data["kepada"] = $this->tampilan->tampil();
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+
               $this->tampilan->set_table("view_nota_tembusan");
               $this->tampilan->set_where($where);
               $this->data["tembusan"] = $this->tampilan->tampil();
@@ -591,6 +673,8 @@
               $where = array("emp_num"=>$this->data["nota"][0]->nota_sender_num);
               $this->pegawai->set_where($where);
               $this->data["dari"] = $this->pegawai->tampil();
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
+             
               $this->data["komentar"] = $this->komentar->tampil();
               $value = array("read_status"=>1);
               $where = array("examiner_id"=>$examiner_id,"nota_id"=>$nota_id);
@@ -643,20 +727,22 @@
                 $this->penerima->set_where(array("nota_id"=>$nota_id));
                 $pem = $this->penerima->tampil();
                 foreach ($pem as $p) {
-                   $where = array("emp_num"=>$p->emp_num,"folder_name"=>"inbox");
-                   $this->folder->set_where($where);
-                   $fol = $this->folder->tampil();
-                   $folder_id = $fol[0]->folder_id;
-                   $this->folder_mapping->folder_id = $folder_id;
-                   $this->folder_mapping->nota_id = $nota_id;
-                   $this->folder_mapping->set_values();
-                   $this->folder_mapping->simpan();
-                        $this->notifikasi->notif_link = $nota_id;
-                        $this->notifikasi->emp_num = $p->emp_num;
-                        $this->notifikasi->notif_type = "8";
-                        $this->notifikasi->notif_desc = "Nota Dinas Masuk,ID ".$nota_id."";
-                        $this->notifikasi->set_values();
-                        $this->notifikasi->simpan();
+                  if($p->external == 0){
+                      $where = array("emp_num"=>$p->emp_num,"folder_name"=>"inbox");
+                      $this->folder->set_where($where);
+                      $fol = $this->folder->tampil();
+                      $folder_id = $fol[0]->folder_id;
+                      $this->folder_mapping->folder_id = $folder_id;
+                      $this->folder_mapping->nota_id = $nota_id;
+                      $this->folder_mapping->set_values();
+                      $this->folder_mapping->simpan();
+                      $this->notifikasi->notif_link = $nota_id;
+                      $this->notifikasi->emp_num = $p->emp_num;
+                      $this->notifikasi->notif_type = "8";
+                      $this->notifikasi->notif_desc = "Nota Dinas Masuk,ID ".$nota_id."";
+                      $this->notifikasi->set_values();
+                      $this->notifikasi->simpan();
+                   }
                 }
 
                 foreach ($semua_pemeriksa as $p) {
@@ -813,15 +899,24 @@
             $dari = $this->pegawai->tampil();
             if(count($dari)>0)
                 $this->data["dari"] =$dari[0];  
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($nota[0]->nota_sender_num);
+             
             $this->data["masalah"] = $this->kode_masalah->tampil();
             $where = array("nota_id"=>$nota_id);
             $this->pegawai->set_table("view_nota_kepada");
             $this->pegawai->set_where($where);
             $this->data["kepada"] =$this->pegawai->tampil(); 
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+
             $this->pegawai->set_table("view_nota_tembusan");
             $this->pegawai->set_where($where);
             $this->data["tembusan"] =$this->pegawai->tampil(); 
-            $this->load->view("content/notadinas/form_edit",$this->data);
+            if(count($this->data["kepada_external"])==0) 
+              $this->load->view("content/notadinas/form_edit",$this->data);
+            else $this->load->view("content/notadinas/form_edit_external",$this->data);
 
           }
           function edit_form_prog($nota_id){
@@ -847,16 +942,25 @@
             $dari = $this->pegawai->tampil();
             if(count($dari)>0)
                 $this->data["dari"] =$dari[0];  
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($nota[0]->nota_sender_num);
+             
             $this->data["masalah"] = $this->kode_masalah->tampil();
                  
             $where = array("nota_id"=>$nota_id);
             $this->pegawai->set_table("view_nota_kepada");
             $this->pegawai->set_where($where);
-            $this->data["kepada"] =$this->pegawai->tampil(); 
+            $this->data["kepada"] =$this->pegawai->tampil();
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+ 
             $this->pegawai->set_table("view_nota_tembusan");
             $this->pegawai->set_where($where);
-            $this->data["tembusan"] =$this->pegawai->tampil(); 
-            $this->load->view("content/notadinas/form_edit_progress",$this->data);
+            $this->data["tembusan"] =$this->pegawai->tampil();
+            if(count($this->data["kepada_external"])==0) 
+              $this->load->view("content/notadinas/form_edit_progress",$this->data);
+            else $this->load->view("content/notadinas/form_edit_progress_external",$this->data);
 
           }
           
@@ -882,15 +986,24 @@
                   $kepada = $this->input->post('kepada');
                   $kepada = substr($kepada, 0, strlen($kepada));
                   $kepada = explode(",", $kepada);
+                   $kepada_nama = $this->input->post('kepada_nama');
+                  $kepada_nama = substr($kepada_nama, 0, strlen($kepada_nama));
+                  $kepada_nama = explode(",", $kepada_nama);
+
                   if($kepada[0]!=""){
                     for($i=0;$i<count($kepada);$i++){
                        $this->penerima->nota_id = $nota_id;
                        $this->penerima->emp_num = $kepada[$i];
-                     $this->penerima->emp_from = $this->aktif_user->emp_num;
+                       $this->penerima->external = ($kepada[$i]=="-1")?1:0;
+                       if($this->penerima->external)
+                          $this->penerima->name = $kepada_nama[$i] ;
+
+                       $this->penerima->emp_from = $this->input->post("nota_sender");
                        $this->penerima->set_values();
                        $this->penerima->simpan();
                     }
                   }
+                  $this->penerima->external = 0;
                     $referensi = $this->input->post('referensi');
                   $referensi = substr($referensi, 0, strlen($referensi));
                   $referensi = explode(",", $referensi);
@@ -936,12 +1049,21 @@
               $this->tampilan->set_where($where);
               $this->tampilan->set_order("nota_id asc");
               $this->data["kepada"] = $this->tampilan->tampil();
+
+            $this->pegawai->set_table("nota_receiver");
+            $this->pegawai->set_where(array("nota_id"=>$nota_id,"external"=>1,"emp_num"=>-1));
+            $this->data["kepada_external"] =$this->pegawai->tampil(); 
+
               $this->tampilan->set_table("view_nota_tembusan");
               $this->tampilan->set_where($where);
               $this->data["tembusan"] = $this->tampilan->tampil();
               $where = array("emp_num"=>$this->data["nota"][0]->nota_sender_num);
+               $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
+             
               $this->pegawai->set_where($where);
               $this->data["dari"] = $this->pegawai->tampil();
+                $this->data["dari_emp"] = $this->employee->get_detail_emp_bynum($this->data["nota"][0]->nota_sender_num);
+             
               $this->data["lampiran"] = $this->lampiran->tampil();
               $this->load->view("content/notadinas/print",$this->data);
            }

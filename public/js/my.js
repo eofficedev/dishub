@@ -41,7 +41,7 @@ window.open(url, 'Print Nota Dinas', 'width=500,height=500,scrollbars=yes');
 }
 function get_value_isi(id){
    
-        var node = CKEDITOR.instances.nota_isi.getData();
+        var node = CKEDITOR.instances[id].getData();
         return node;
     }
 	function generate_kode_tab(){
@@ -75,6 +75,21 @@ function get_value_isi(id){
 	            {
 	            	ganti_nav(data);
 
+	            }
+				});
+			});
+			$("#compose_external").click(function(){
+				$.ajax({
+                type: "GET",
+                async: false,
+	            url: "<?php echo site_url('nav/compose_external') ?>",
+	            success: function(data)
+	            {
+	              $(".tab-pane").removeClass("active");
+	              $(".headingtab").removeClass("active");
+
+	              add_tab(generate_kode_tab(),'Compose',data);
+	              init_editor();
 	            }
 				});
 			});
@@ -161,7 +176,9 @@ function pilih(empnum){
 	    }
 	}
 
-	var x = document.getElementById(pil);
+	document.getElementById(pil);
+var x = document.getElementById(pil);
+	
 	                    ;
     for(var i = 0;i<x.length;i++){
         if(x.options[i].value == empnum){
@@ -199,27 +216,36 @@ function pilih(empnum){
 			 	x.add(option, x.options[null]);
 			 	 if(pil=="sel_disposisi"){
 			 		 x.remove(0);
-                                     var value_nama = data.emp_firstname + " "+data.emp_lastname + " / " + data.job_name;
-                var textbox  = "<tr class='attdis"+empnum+"'><td><input type=hidden name='disposisi_kepada[]' value='"+empnum+"'><input readonly type=\"text\" value='"+value_nama+"' ></td><td><a onclick=remove_att('dis"+empnum+"')>Delete</a></td><td><select name=\"nota_tindakan[]\" >";
-                              textbox  =textbox+"<option value='Untuk dihadiri'>Untuk dihadiri</option>";
-                                    textbox  =textbox+"<option value='Untuk diketahui'>Untuk diketahui</option>";
-                                    textbox  =textbox+"<option value='Setuju dilaksanakan dan proses selanjutnya'>Setuju dilaksanakan dan proses selanjutnya</option>";
-                                    textbox  =textbox+"<option value='Buatkan konsep jawabannya'>Buatkan konsep jawabannya</option>";
-                                    textbox  =textbox+"<option value='Harap menjadi perhatian Sdr.'>Harap menjadi perhatian Sdr.</option>";
-                                    textbox  =textbox+"<option value='Proses sesuai kewenangan Sdr.'>Proses sesuai kewenangan Sdr.</option>";
-                                    textbox  =textbox+"<option value='Agar dijawab langsung oleh Sdr.'>Agar dijawab langsung oleh Sdr.</option>";
-                                    textbox  =textbox+"<option value='Harap dibicarakan langsung dengan kami'>Harap dibicarakan langsung dengan kami</option>";
-                                   textbox  =textbox+" <option value='Harap dilaporkan hasilnya'>Harap dilaporkan hasilnya</option>";
-                                    textbox  =textbox+"<option value='Agar diperiksa dan ditindaklanjuti'>Agar diperiksa dan ditindaklanjuti</option>";
-                                    textbox  =textbox+"<option value='Manfaatkan informasi ini'>Manfaatkan informasi ini</option>";
-                                    textbox  =textbox+"<option value='Ajukan saran tindak lanjut'>Ajukan saran tindak lanjut</option>";
-                                    textbox  =textbox+"<option value='Teruskan hal ini ke jajaran Sdr.'>Teruskan hal ini ke jajaran Sdr.</option>";
-                                    textbox  =textbox+"<option value='Harap prioritaskan tugas ini'>Harap prioritaskan tugas ini</option>";
-                                    textbox  =textbox+"</select></td></tr>";
-                var isitindakan = document.getElementById("tindakan").innerHTML
+                                      var value_nama = data.emp_firstname + " "+data.emp_lastname + " / " + data.job_name;
+       //          var textbox  = "<tr class='attdis"+empnum+"'><td><input type=hidden name='disposisi_kepada[]' value='"+empnum+"'><input readonly type=\"text\" value='"+value_nama+"' ></td><td><a onclick=remove_att('dis"+empnum+"')>Delete</a></td><td><select name=\"nota_tindakan[]\" >";
+       //                        textbox  =textbox+"<option value='Untuk dihadiri'>Untuk dihadiri</option>";
+       //                              textbox  =textbox+"<option value='Untuk diketahui'>Untuk diketahui</option>";
+       //                              textbox  =textbox+"<option value='Setuju dilaksanakan dan proses selanjutnya'>Setuju dilaksanakan dan proses selanjutnya</option>";
+       //                              textbox  =textbox+"<option value='Buatkan konsep jawabannya'>Buatkan konsep jawabannya</option>";
+       //                              textbox  =textbox+"<option value='Harap menjadi perhatian Sdr.'>Harap menjadi perhatian Sdr.</option>";
+       //                              textbox  =textbox+"<option value='Proses sesuai kewenangan Sdr.'>Proses sesuai kewenangan Sdr.</option>";
+       //                              textbox  =textbox+"<option value='Agar dijawab langsung oleh Sdr.'>Agar dijawab langsung oleh Sdr.</option>";
+       //                              textbox  =textbox+"<option value='Harap dibicarakan langsung dengan kami'>Harap dibicarakan langsung dengan kami</option>";
+       //                             textbox  =textbox+" <option value='Harap dilaporkan hasilnya'>Harap dilaporkan hasilnya</option>";
+       //                              textbox  =textbox+"<option value='Agar diperiksa dan ditindaklanjuti'>Agar diperiksa dan ditindaklanjuti</option>";
+       //                              textbox  =textbox+"<option value='Manfaatkan informasi ini'>Manfaatkan informasi ini</option>";
+       //                              textbox  =textbox+"<option value='Ajukan saran tindak lanjut'>Ajukan saran tindak lanjut</option>";
+       //                              textbox  =textbox+"<option value='Teruskan hal ini ke jajaran Sdr.'>Teruskan hal ini ke jajaran Sdr.</option>";
+       //                              textbox  =textbox+"<option value='Harap prioritaskan tugas ini'>Harap prioritaskan tugas ini</option>";
+       //                              textbox  =textbox+"</select></td></tr>";
+       //          var isitindakan = document.getElementById("tindakan").innerHTML
+       //          document.getElementById("tindakan").innerHTML =   isitindakan+textbox;
+       		var source = ['Untuk diketahui','Setuju dilaksanakan dan proses selanjutnya',"Buatkan konsep jawabannya",
+       						"Harap menjadi perhatian Sdr.","Proses sesuai kewenangan Sdr.","Agar dijawab langsung oleh Sdr.",
+       						"Harap dibicarakan langsung dengan kami","Harap dilaporkan hasilnya","Agar diperiksa dan ditindaklanjuti",
+       						"Manfaatkan informasi ini", "Ajukan saran tindak lanjut", "Teruskan hal ini ke jajaran Sdr.","Harap prioritaskan tugas ini"]
+	        var textbox  = "<tr class='attdis"+empnum+"'><td><input type=hidden name='disposisi_kepada[]' value='"+empnum+"'><input readonly type=\"text\" value='"+value_nama+"' ></td><td><a onclick=remove_att('dis"+empnum+"')>Delete</a></td><td><input type='text' name=\"nota_tindakan[]\" class='typeahead-"+empnum+"'></td>";
+	                   var isitindakan = document.getElementById("tindakan").innerHTML
                 document.getElementById("tindakan").innerHTML =   isitindakan+textbox;
+     			$(".typeahead-"+empnum).typeahead({source:source});
+     			console.log("teststs");
                                 }
-			 	if(pil == "pemeriksa" || pil=="dari"){
+			 	if(pil == "pemeriksa" || pil=="dari" || pil=="tembusan"){
                 	$('#modal-form-pemeriksa').modal("hide");
                 	
 			 	}
@@ -227,4 +253,18 @@ function pilih(empnum){
                 	$('#modal-form').modal("hide");
 			}
 		});
+}
+function submitKepadaCustom(){
+	var x = document.getElementById(pil);
+	var option = document.createElement("option");
+		option.text = $("input[name=txt_kepada]").val();
+		option.value = "-1";
+		if(option.text == "")
+		{
+			alert("Data tidak boleh kosong");
+			return true;
+		}
+		x.add(option,x.options[null]);
+        $("input[name=txt_kepada]").val("");
+        $('#modal-form').modal("hide");
 }

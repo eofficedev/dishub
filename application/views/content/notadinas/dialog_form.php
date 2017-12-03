@@ -40,7 +40,13 @@
             <li><a href="#tabss-4">Berdasarkan Nama</a></li>
             <li><a href="#tabss-1">Pencarian Berdasarkan Jabatan</a></li>
             <li><a href="#tabss-2">Pencarian Berdasarkan Nama</a></li>
+            <!-- <li><a href="#tabss-5">Eksternal Organisasi</a></li> -->
         </ul>
+       <!--  <div id='tabss-5'>
+            <label>Kepada</label>
+            <input type="text" name="txt_kepada" class="form-control">
+            <button class="btn btn-default" onclick="submitKepadaCustom()">Submit</button>
+        </div> -->
         <div id="tabss-3">
             <div class="accordion" id="jabatan-<?php echo $pimpinan->emp_num ?>">
               <div class="accordion-group">
@@ -108,7 +114,6 @@
                     $j++;
                 }
                 ?>
-
             </table>
         </div>
         <div id="tabss-2">
@@ -223,7 +228,7 @@
                 <?php
                 $i = 0;
                 $j = 1;
-                foreach ($all_atasan as $row) {
+                foreach ($all_emp as $row) {
                     ?>
                     <tr id="pilihan-jbt-<?php echo $i; ?>">
                         <td style="padding-left:20px;"><?php echo $row->job_id . "-" . $row->job_name; ?></td>
@@ -259,7 +264,7 @@
                 <?php
                 $i = 0;
                 $j = 1;
-                foreach ($all_atasan as $row) {
+                foreach ($all_emp as $row) {
                     ?>
                     <tr id="pilihan-<?php echo $i; ?>">
                         <td style="padding-left:20px;"><?php echo $row->emp_firstname . " " . $row->emp_lastname . "/" . $row->job_code . " - " . $row->emp_id . "/" . $row->org_code; ?></td>
