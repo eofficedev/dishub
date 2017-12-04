@@ -22,7 +22,7 @@
 <table>
 	<tr>
 		<td></td>
-		<td><?php echo $options[0]->kota.", ". date("j F  Y", strtotime($nota[0]->nota_date)) ?></td>
+		<td align="right"><?php echo $options[0]->kota.", ". date("j F  Y", strtotime($nota[0]->nota_date)) ?></td>
 	</tr>
 	<tr>
 		<td >
@@ -136,30 +136,18 @@
 				</td>
 			</tr>
 			<tr>
-				<td width="75%"></td>
-				<td width="25%">
-					<table align="center">
-						<tr >
-							<td align="center" class="nama" id="nama-dari"><b style="text-decoration: underline;"><?php echo $options[0]->jabatan_pengirim  ?></b>
+				<td width="100%">
+					<div style="float:right">
+						<p align="center">
+							<b style="text-decoration: underline;"><?php echo $options[0]->jabatan_pengirim  ?></b>
 								<br><br><br><br><br>
-							</td>
-
-						</tr>
-						<tr >
-							<td align="center" class="nik" id="nik-dari">
 								<b style="text-decoration: underline;"><?php echo $dari_emp->emp_firstname ?></b><br>
 								<b style="">Nip. <?php echo $options[0]->nik_pengirim ?></b>
 								<br><br><br>
-							</td>
-						</tr>
-								</table>
-							</td>
-						</tr>
-						
-						
-					</table>
-					</td>
-				</tr>
+						</p>
+					</div>
+				</td>
+			</tr>
 		</table>
 
 

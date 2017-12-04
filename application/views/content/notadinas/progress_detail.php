@@ -123,7 +123,7 @@
 <table>
 	<tr>
 		<td></td>
-		<td><?php echo $options[0]->kota.", ". date("j F  Y", strtotime($nota[0]->nota_date)) ?></td>
+		<td align="right"><?php echo $options[0]->kota.", ". date("j F  Y", strtotime($nota[0]->nota_date)) ?></td>
 	</tr>
 	<tr>
 		<td >

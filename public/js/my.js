@@ -245,7 +245,7 @@ var x = document.getElementById(pil);
      			$(".typeahead-"+empnum).typeahead({source:source});
      			console.log("teststs");
                                 }
-			 	if(pil == "pemeriksa" || pil=="dari" || pil=="tembusan"){
+			 	if(pil == "pemeriksa" || pil=="dari"){
                 	$('#modal-form-pemeriksa').modal("hide");
                 	
 			 	}
