@@ -243,9 +243,9 @@ var x = document.getElementById(pil);
 	                   var isitindakan = document.getElementById("tindakan").innerHTML
                 document.getElementById("tindakan").innerHTML =   isitindakan+textbox;
      			$(".typeahead-"+empnum).typeahead({source:source});
-     			console.log("teststs");
+     			console.log(pil);
                                 }
-			 	if(pil == "pemeriksa" || pil=="dari"){
+			 	if(pil == "pemeriksa" || pil=="dari" || pil=="tembusan"){
                 	$('#modal-form-pemeriksa').modal("hide");
                 	
 			 	}

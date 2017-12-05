@@ -178,31 +178,20 @@ else if ($dat->emp_role == 3) {
     <ul  class="nav navbar-nav">
            
              <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SPPD <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo site_url("sppd/new_sppd") ?>">Buat SPPD</a></li>
-                <li><a href="<?php echo site_url("sppd/draft_sppd") ?>">Draft</a></li>
-                <li><a href="<?php echo site_url("sppd/proses_sppd") ?>">Sedang di Proses</a></li>
-                <li><a href="<?php echo site_url("sppd/perlu_proses_sppd") ?>">Perlu Proses</a></li>
-                <li><a href="<?php echo site_url("sppd/telah_proses_sppd") ?>">Telah Proses</a></li>
-              </ul>
+              <a href="<?php echo site_url("not_installed") ?>">SPPD</a>
             </li>
             <li >
               <a href="<?php echo site_url("notadinas/index") ?>">Notadinas </a>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cuti <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo site_url("cuti/home") ?>">Dahboard</a></li>
-                <li><a href="<?php echo site_url("cuti/home/mohon") ?>">Ajukan Permohonan</a></li>
-              </ul>
+              <a  href="<?php echo site_url("not_installed") ?>" >Cuti</a>
             </li>
             <li >
-              <a href="<?php echo site_url("absensi/home") ?>">Absen </a>
+              <a href="<?php echo site_url("not_installed") ?>">Absen </a>
             </li>
 
             <li >
-              <a href="<?php echo site_url("email/home") ?>">Email </a>
+              <a  href="<?php echo site_url("not_installed") ?>">Email </a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

@@ -64,7 +64,7 @@
 					}
 				 ?>
 			</select>
-				<a class='btn btn-success' id='btn-show-kepada' onclick="open_dialog('tembusan')">Adress Book</a>
+				<a class='btn btn-success' id='btn-show-kepada' onclick="open_dialog_pemeriksa('tembusan')">Adress Book</a>
 					  <a class='btn btn-default' id='btn-delete-kepada' onclick="delete_option('tembusan')">Delete</a>
 			</td>
 		</tr><tr>

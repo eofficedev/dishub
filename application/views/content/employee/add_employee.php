@@ -304,9 +304,11 @@
                         }
                         ?></td>
                     <td class="error-msg"><?php 
+                    if($this->input->post("emp_work_telp")){
                     foreach ($this->input->post("emp_work_telp") as $key => $value) {
                         echo form_error('emp_work_telp['.$key.']');
                     }
+                }
                      ?></td>
                     <td><button class="tambah-btn">+</button></td>
                 </tr>
