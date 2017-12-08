@@ -241,8 +241,11 @@ function submit_draft(){
 					     contentType: false,
 			            success: function (data){
 					            	//document.getElementById("compose_detail").innerHTML = data;               
-								           	document.getElementById('compose_detail').innerHTML = "Nota Telah di simpan di draft";
-	            	
+								setTimeout(function(){
+				document.getElementById('compose_detail').innerHTML = "Nota Telah di simpan di draft";
+	            
+								},3000);
+					
 			            }
 			        
 			        });
@@ -373,7 +376,9 @@ function submit_draft(){
 				     contentType: false,
 		            success: function (data){
 		            	//document.getElementById("compose_detail").innerHTML = data;               
-		            	window.location =url;
+		            	setTimeout(function(){
+		            		 window.location =url;
+		            		},3000);
 		            }
 		        
 		        });

@@ -171,10 +171,11 @@
 			<td></td>
 		</tr>
 		<?php 
-		foreach ($kepada as $k) {
+
+		foreach ($kepada as $n => $k) {
 			?>
 				<tr>
-					<td align="right" style="text-align: center">Yth. </td>
+					<td align="right" style="text-align: center"><?php if($n==0)  echo "Yth."; ?> </td>
 					<td><?php echo $k->job_name ?></td>
 				</tr>
 			<?php

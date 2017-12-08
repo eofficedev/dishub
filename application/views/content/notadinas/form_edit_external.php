@@ -390,7 +390,9 @@ $.ajax({
 	            	document.getElementById('notaid').value = data;
             		document.getElementById('file_upload_form').submit();
             		document.getElementById('save-config').submit();
-            		document.getElementById('edit_detail').innerHTML = "Nota Telah di simpan di draft";
+            		setTimeout(function(){
+						document.getElementById('edit_detail').innerHTML = "Nota Telah di simpan di draft";
+            		},3000);
 	            },
 	        	 error: function(xhr, textStatus, error){
 				      console.log(xhr.statusText);

@@ -133,9 +133,9 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
+        <!-- <li>
            <a href="#">Notifications</a> 
-        </li>
+        </li> -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -160,9 +160,9 @@ else if ($dat->emp_role == 3) {
               
 </ul>
  <ul class="nav navbar-nav navbar-right">
-        <li>
+        <!-- <li>
            <a href="#">Notifications</a> 
-        </li>
+        </li> -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -195,9 +195,9 @@ else if ($dat->emp_role == 3) {
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-        <li>
+        <!-- <li>
            <a href="#">Notifications</a> 
-        </li>
+        </li> -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">

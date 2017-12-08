@@ -363,8 +363,12 @@ function submit_draft(){
 				     processData: false,
 				     contentType: false,
 		            success: function (data){
-		            	//document.getElementById("compose_detail").innerHTML = data;               
+		            	//document.getElementById("compose_detail").innerHTML = data; 
+		            	setTimeout(function(){   
 		            	window.location =url;
+
+		            	}
+		            		,3000)           
 		            }
 		        
 		        });

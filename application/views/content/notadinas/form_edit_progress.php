@@ -241,7 +241,7 @@
 			     contentType: false,
 	            success: function (data){
             		document.getElementById('file_upload_form').submit();
-		document.getElementById('nota_id_config').value = data;
+					document.getElementById('nota_id_config').value = data;
             		document.getElementById('save-config').submit();
             		url =  "<?php echo site_url('notadinas/nav/nota_det_prog/') ?>/"+nota_id+"/<?php echo $user_aktif->emp_num ?>";
 				           		$.ajax({
@@ -251,7 +251,9 @@
 					             processData: false,
 							     contentType: false,
 					            success: function (data){
-					            		window.location = url;
+					            		setTimeout(function(){
+						            		window.location = url;
+						            	},3000);
 					                },
 					        	 error: function(xhr, textStatus, error){
 								      console.log(xhr.statusText);

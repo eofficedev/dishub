@@ -255,7 +255,10 @@
 					             processData: false,
 							     contentType: false,
 					            success: function (data){
+					            	setTimeout(function(){
 					            		window.location = url;
+
+					            	},3000)
 					                },
 					        	 error: function(xhr, textStatus, error){
 								      console.log(xhr.statusText);

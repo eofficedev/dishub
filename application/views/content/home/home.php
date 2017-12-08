@@ -41,7 +41,7 @@
                 ?>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-3">
                 <img width="120" style="margin-left: 15px; margin-top: 20px;" height="100" src="<?php echo base_url();?>css/sppd.jpg"/>
             </div>
@@ -70,7 +70,7 @@
                 <p><b>Pengajuan Cuti : </b></p>
                 <a href="#">Buat Surat Pengajuan Cuti</a><br/>
             </div>
-        </div>
+        </div> -->
     </div>
     <div id="content-right">
         <div id="content-right-data">
